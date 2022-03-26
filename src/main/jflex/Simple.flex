@@ -1,15 +1,13 @@
 /* --------------------------Section de Code Utilisateur---------------------*/
 package fr.usmb.m1isc.compilation.simple;
-import java_cup.runtime.Symbol;
+import java_cup.runtime.Symbol;import java.util.LinkedList;
 
 %%
 
 /* -----------------Section des Declarations et Options----------------------*/
 // nom de la class a generer
-%class SimpleLexer
+%class CalcFlex
 %unicode
-%line   // numerotation des lignes
-%column // numerotation caracteres par ligne
 
 // utilisation avec CUP
 // nom de la classe generee par CUP qui contient les symboles terminaux
@@ -18,26 +16,32 @@ import java_cup.runtime.Symbol;
 %cup
 
 // code a ajouter dans la classe produite
-%{
-
-%}
+%{eofval
+    return new Symbol(SimpleParserSym.EOF);
+%eofval}
 
 /* definitions regulieres */
-il      =   "Il"|"il"
-elle    =   "Elle"|"elle" 
-pronom  =   {il}|{elle}
-verbe   =   "est"|"boit"
-adj     =   "vite"|"beau"|"belle"|"bien"|"chaud"
-sep     =   \s
-point   =   [.?!;]
+nombre = [0-9]+
+espaces = \n|\r|\r\n
+separateur = ";"
+plus = "+"
+moins = "-"
+pad = "("
+div = "/"
+mult = "*"
+pag = ")"
 
 %% 
 /* ------------------------Section des Regles Lexicales----------------------*/
 
 /* regles */
-{sep}+          { /* pas d'action */ }
-{pronom}        { return new Symbol(SimpleParserSym.PRONOM, yyline, yycolumn); }
-{verbe}         { return new Symbol(SimpleParserSym.VERBE, yyline, yycolumn); }
-{adj}           { return new Symbol(SimpleParserSym.ADJECTIF, yyline, yycolumn); }
-{point}         { return new Symbol(SimpleParserSym.POINT, yyline, yycolumn); }
-.               { return new Symbol(SimpleParserSym.ERROR, yyline, yycolumn); }
+{espaces} {/*Rien à faire*/}
+{nombre} {return new Symbol(SimpleParserSym.NUMBER, new Integer(yytext())); }
+{plus} {return new Symbol(SimpleParserSym.PLUS);}
+{moins} {return new Symbol(SimpleParserSym.MOINS);}
+{mult} {return new Symbol(SimpleParserSym.MULT);}
+{div} {return new Symbol(SimpleParserSym.DIV);}
+{pad} {return new Symbol(SimpleParserSym.PAD);}
+{pag} {return new Symbol(SimpleParserSym.PAG);}
+
+

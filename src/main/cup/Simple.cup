@@ -4,53 +4,48 @@ import java_cup.runtime.Symbol;
 
 // nom de la classe a generer
 class SimpleParser;
-
 /* inclusion du code */
-
-action code {: 
-    // pour utilisation dans les actions (classe action)
-:};
-
-
 parser code {:
-    // pour le parser (redefinition de la methode reportant les erreurs d'analyse)
-    public void report_error(String message, Object info) {
-        String m = "";
-        if (info instanceof java_cup.runtime.Symbol) {
-            Symbol s = ((Symbol) info);     
-            if (s.left >= 0) {
-                /* Ajoute le numero de ligne  */
-                m = m + "Ligne " + (s.left+1) + " ";
-            }
-            if (s.right >= 0) {
-                /* Ajoute le numero de colonne  */
-                m = m + "Colonne " + (s.right+1) + " ";
-            }
-            if (s.left >=0  || s.right >= 0) {
-                m = m + ": ";            
-            }
-        }
-        m = m + "Erreur de syntaxe";
-        System.out.println(m);
-    }
-:};
+ public void report_error(String message, Object info) {
+ String m = "Erreur de syntaxe.";
+ if (info instanceof Symbol) {
+ Symbol s = ((Symbol) info);
+ if (s.left >= 0) /* Numéro de ligne */
+ m = m + " ligne : " + (s.left+1);
+ }
+ System.out.println(m);
+ }
+:} ;
 
  init with {:
     //    initialisation du parser
 :};
 
 /* symboles terminaux */
-terminal VERBE, PRONOM, ADJECTIF, POINT;
+terminal PLUS, MOINS, DIV, MULT, PAG, PAD;
 terminal ERROR;
-
+terminal Integer NUMBER;
 /* non terminaux */
-non terminal phrase , texte;
+non terminal Integer expr;
+
+/* Precedences */
+precedence left PLUS,MOINS;
+precedence left MULT, DIV;
+
+
 
 /* grammaire */
+expr    ::=
+        expr:e1 PLUS expr:e2
+            {: RESULT=new Integer(e1.intValue()+e2.intValue());:} |
+        expr:e1 MOINS expr:e2
+            {: RESULT=new Integer(e1.intValue()-e2.intValue());:}|
+        expr:e1 MULT expr:e2
+            {: RESULT=new Integer(e1.intValue()*e2.intValue());:}|
+        expr:e1 DIV expr:e2
+            {: RESULT=new Integer(e1.intValue()/e2.intValue());:}|
+        NUMBER:n {: RESULT=n;:} |
+        PAG expr:e PAD {: RESULT=e;:};
 
-texte   ::= phrase texte 
-          | phrase ; 
-phrase  ::= PRONOM VERBE ADJECTIF {: System.out.println("OK"); :} POINT 
-          | error POINT 
-          ;
+
 
