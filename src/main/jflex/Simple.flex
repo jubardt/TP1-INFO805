@@ -28,10 +28,10 @@ espaces = \n|\r|\r\n|\s|\t
 separateur = ";"
 plus = "+"
 moins = "-"
-pad = "("
+pad = ")"
 div = "/"
 mult = "*"
-pag = ")"
+pag = "("
 pointvirgule =";"
 
 %% 
