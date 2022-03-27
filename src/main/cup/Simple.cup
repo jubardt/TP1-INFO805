@@ -51,7 +51,7 @@ expr    ::=
         expr:e1 MULT expr:e2
             {: RESULT=new Integer(e1.intValue()*e2.intValue());:}|
         expr:e1 DIV expr:e2
-            {: RESULT=new Integer(e1.intValue()/e2.intValue());:}|
+            {: if(e2!=0){RESULT=new Integer(e1.intValue()/e2.intValue());}else{RESULT=0;}:}|
         expr:e1 MOD expr:e2
             {: RESULT=new Integer(e1.intValue()%e2.intValue());:}|
         NUMBER:n {: RESULT=n;:} |
