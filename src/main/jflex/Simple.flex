@@ -33,6 +33,7 @@ div = "/"
 mult = "*"
 pag = "("
 pointvirgule =";"
+mod = "mod"
 
 %% 
 /* ------------------------Section des Regles Lexicales----------------------*/
@@ -46,6 +47,7 @@ pointvirgule =";"
 {div} {return new Symbol(SimpleParserSym.DIV, yyline,yycolumn);}
 {pad} {return new Symbol(SimpleParserSym.PAD, yyline,yycolumn);}
 {pag} {return new Symbol(SimpleParserSym.PAG, yyline,yycolumn);}
+{mod} {return new Symbol(SimpleParserSym.MOD, yyline, yycolumn);}
 {pointvirgule} {return new Symbol(SimpleParserSym.PV, yyline, yycolumn);}
 . {/*Rien à faire*/}
 
