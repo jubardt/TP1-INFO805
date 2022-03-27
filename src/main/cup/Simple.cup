@@ -7,13 +7,13 @@ class SimpleParser;
 /* inclusion du code */
 parser code {:
  public void report_error(String message, Object info) {
- String m = "Erreur de syntaxe.";
- if (info instanceof Symbol) {
- Symbol s = ((Symbol) info);
- if (s.left >= 0) /* Numéro de ligne */
- m = m + " ligne : " + (s.left+1);
- }
- System.out.println(m);
+     String m = "Erreur de syntaxe.";
+     if (info instanceof Symbol) {
+         Symbol s = ((Symbol) info);
+         if (s.left >= 0) /* Numéro de ligne */
+         m = m + " ligne : " + (s.left+1);
+     }
+     System.out.println(m);
  }
 :} ;
 
@@ -22,10 +22,10 @@ parser code {:
 :};
 
 /* symboles terminaux */
-terminal PLUS, MOINS, DIV, MULT, PAG, PAD;
-terminal ERROR;
+terminal PLUS, MOINS, DIV, MULT, PAG, PAD ,PV;
 terminal Integer NUMBER;
 /* non terminaux */
+non terminal seq_expressions, expression;
 non terminal Integer expr;
 
 /* Precedences */
@@ -35,6 +35,11 @@ precedence left MULT, DIV;
 
 
 /* grammaire */
+seq_expressions::= expression seq_expressions | expression;
+
+expression::= expr:e {: System.out.println("Eval="+e.intValue());:} PV
+            | error PV;
+
 expr    ::=
         expr:e1 PLUS expr:e2
             {: RESULT=new Integer(e1.intValue()+e2.intValue());:} |

@@ -2,6 +2,7 @@ package fr.usmb.m1isc.compilation.simple;
 
 import java_cup.runtime.Symbol;
 
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
 public class Main {
@@ -15,7 +16,11 @@ public class Main {
         SimpleParser p = new SimpleParser(lexer);
         p.parse();*/
         CalcFlex yy;
-        yy = new CalcFlex((new InputStreamReader(System.in)));
+        if(args.length > 0){
+            yy = new CalcFlex(new InputStreamReader(new FileInputStream(args[0])));
+        }else{
+            yy = new CalcFlex(new InputStreamReader(System.in));
+        }
         SimpleParser p = new SimpleParser(yy);
         Symbol result = p.parse();
         System.out.println("Evaluation = "+result.value);
