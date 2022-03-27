@@ -31,6 +31,7 @@ non terminal Integer expr;
 /* Precedences */
 precedence left PLUS,MOINS;
 precedence left MULT, DIV;
+precedence left MOINS;
 
 
 
@@ -41,6 +42,8 @@ expression::= expr:e {: System.out.println("Eval="+e.intValue());:} PV
             | error PV;
 
 expr    ::=
+        MOINS expr:e
+            {:RESULT = new Integer(0 - e.intValue());:} |
         expr:e1 PLUS expr:e2
             {: RESULT=new Integer(e1.intValue()+e2.intValue());:} |
         expr:e1 MOINS expr:e2
