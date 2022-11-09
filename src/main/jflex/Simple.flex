@@ -34,6 +34,8 @@ mult = "*"
 pag = "("
 pointvirgule =";"
 mod = "mod"
+ident = [A-Za-z][A-Za-z0-9]*
+assign = "="
 
 %% 
 /* ------------------------Section des Regles Lexicales----------------------*/
@@ -49,6 +51,8 @@ mod = "mod"
 {pag} {return new Symbol(SimpleParserSym.PAG, yyline,yycolumn);}
 {mod} {return new Symbol(SimpleParserSym.MOD, yyline, yycolumn);}
 {pointvirgule} {return new Symbol(SimpleParserSym.PV, yyline, yycolumn);}
+{ident} {return new Symbol(SimpleParserSym.IDENT, yyline, yycolumn);}
+{assign} {return new Symbol(SimpleParserSym.ASSIGN, yyline, yycolumn);}
 . {/*Rien à faire*/}
 
 

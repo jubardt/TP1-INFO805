@@ -1,10 +1,17 @@
 /* package et imports */
 package fr.usmb.m1isc.compilation.simple;
+import java.util.*;
+import java.io.*;
 import java_cup.runtime.Symbol;
 
 // nom de la classe a generer
 class SimpleParser;
 /* inclusion du code */
+action code
+    {:
+        Hashtable table = new Hashtable();
+    :};
+
 parser code {:
  public void report_error(String message, Object info) {
      String m = "Erreur de syntaxe.";
@@ -22,7 +29,7 @@ parser code {:
 :};
 
 /* symboles terminaux */
-terminal PLUS, MOINS, DIV, MULT, PAG, PAD ,PV, MOD;
+terminal PLUS, MOINS, DIV, MULT, PAG, PAD ,PV, MOD, ASSIGN, IDENT;
 terminal Integer NUMBER;
 /* non terminaux */
 non terminal seq_expressions, expression;
@@ -54,6 +61,8 @@ expr    ::=
             {: if(e2!=0){RESULT=new Integer(e1.intValue()/e2.intValue());}else{RESULT=0;}:}|
         expr:e1 MOD expr:e2
             {: RESULT=new Integer(e1.intValue()%e2.intValue());:}|
+        IDENT:e1 ASSIGN expr:e2
+            {: table.put(e1,e2); System.out.println(table.toString());:}|
         NUMBER:n {: RESULT=n;:} |
         PAG expr:e PAD {: RESULT=e;:};
 
